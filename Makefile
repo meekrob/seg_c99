@@ -1,14 +1,18 @@
+CC=gcc
 CFLAGS= -g
-all : seg
+LIBS=-lm
+HEADERS=lnfac.h genwin.h
 
-seg : seg.c lnfac.h genwin.h genwin.o
-	cc -O -o seg seg.c genwin.o -lm
+all: seg
 
-hiseg : hiseg.c lnfac.h genwin.h genwin.o
-	cc -O -o hiseg hiseg.c genwin.o -lm
+seg: seg.o genwin.o
+	$(CC) $^ $(LIBS) -o $@
 
-genwin.o : genwin.c genwin.h
-	cc -O -c genwin.c
+hiseg: hiseg.o genwin.o
+	$(CC) $^ $(LIBS) -o $@
+
+%.o: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f seg seg.o genwin.o
